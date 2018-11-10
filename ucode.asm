@@ -1,5 +1,4 @@
 LABEL fetch_instruction
-    CALL check_interrupt
     LOAD_REG u0, 0xff
     LOADMEM u3, u0
     STORE_REG u3, 0xfe
@@ -132,7 +131,4 @@ LABEL continue
 LABEL write_u1_rd
     SHIFT_AND_MASK 7, 5
     STORE_REG_REG u0, u1
-    RET
-
-LABEL check_interrupt
     RET

@@ -96,7 +96,7 @@ def SUB(dst, src, **kwargs):
     kwargs["code"].append((0b001001 << 10) | (dst << 8) | src)
 
 @instruction(label)
-def BZ_DEC(addr, **kwargs):
+def BZ(addr, **kwargs):
     kwargs["code"].append((0b001010 << 10) | addr)
 
 @instruction(label)
@@ -139,6 +139,8 @@ def SIMM_J(dst, **kwargs):
 def SIMM_I(dst, **kwargs):
     kwargs["code"].append((0b010100 << 10) | (dst << 8))
 
+
+
 def single_pass(source, labels = None):
     if not labels: labels = {}
     code = []
@@ -158,25 +160,15 @@ def assemble(source):
     code, _ = single_pass(source, labels = lbls)
     return code 
 
-def generate_rom(code, romname):
-    rom = open("rom_template.v", "r").read()
-    content = []
-    for i, word in enumerate(code):
-        content.append("rom[%i] <= 16'h%04x;" % (i, word))
-    content = "\n".join(content)
-    
-    rom = rom.replace("##ROMNAME##", romname)
-    rom = rom.replace("##CONTENTS##", content)
-    return rom.strip()
-
 def main():
     if len(sys.argv) < 2:
-        print "Usage: %s <assembly file> <ROMNAME>" % sys.argv[0]
+        print "Usage: %s <assembly file>" % sys.argv[0]
         return 1
 
     source = open(sys.argv[1], "r").read()
     code = assemble(source)
-    print generate_rom(code, "ucode")
+    print "@0"
+    print " ".join("%04x" % word for word in code)
     return 0
     
 if __name__ == "__main__": exit(main())

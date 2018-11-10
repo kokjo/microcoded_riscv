@@ -5,4 +5,4 @@ ucode.v
 *.json
 *.vcd
 *.pyc
-
+*.mem
