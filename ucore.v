@@ -1,4 +1,4 @@
-module microcore (
+module ucore (
     clk, rst,
     mem_valid, mem_ready,
     mem_addr, mem_rdata,
