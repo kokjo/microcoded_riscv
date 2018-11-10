@@ -6,3 +6,5 @@ ucode.v
 *.vcd
 *.pyc
 *.mem
+*.rpt
+*.asc

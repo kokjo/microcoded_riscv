@@ -1,3 +1,7 @@
+LABEL start
+    GET_RESET_PC u0
+    STORE_REG u0, 0xff
+
 LABEL fetch_instruction
     LOAD_REG u0, 0xff
     LOADMEM u3, u0
@@ -7,11 +11,9 @@ LABEL fetch_instruction
     BNZ unknown_opcode
 
     SHIFT_AND_MASK 15, 5
-    MOVE u1, u0
-    LOAD_REG_REG u1, u1
+    LOAD_REG_REG u1, u0
     SHIFT_AND_MASK 20, 5
-    MOVE u2, u0
-    LOAD_REG_REG u2, u2
+    LOAD_REG_REG u2, u0
 
     SHIFT_AND_MASK 2, 5
     ADDPC u0
@@ -58,6 +60,36 @@ LABEL opcode_fence
 
 LABEL opcode_04
 LABEL opcode_alui
+    SIMM_I u1
+    SHIFT_AND_MASK 12, 3
+    ADDPC u0
+    JUMP opcode_alui_0
+    JUMP opcode_alui_1
+    JUMP opcode_alui_2
+    JUMP opcode_alui_3
+    JUMP opcode_alui_4
+    JUMP opcode_alui_5
+    JUMP opcode_alui_6
+    JUMP opcode_alui_7
+
+LABEL opcode_alui_0
+    ADD u1, u0
+    JUMP opcode_alui_wb
+
+LABEL opcode_alui_1
+    SHIFTL u1, u0
+    JUMP opcode_alui_wb
+
+LABEL opcode_alui_2
+LABEL opcode_alui_3
+LABEL opcode_alui_4
+LABEL opcode_alui_5
+LABEL opcode_alui_6
+LABEL opcode_alui_7
+    JUMP continue
+
+LABEL opcode_alui_wb
+    CALL write_u1_rd
     JUMP continue
 
 LABEL opcode_08
@@ -130,5 +162,5 @@ LABEL continue
 
 LABEL write_u1_rd
     SHIFT_AND_MASK 7, 5
-    STORE_REG_REG u0, u1
+    STORE_REG_REG u1, u0
     RET

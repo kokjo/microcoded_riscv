@@ -1,6 +1,6 @@
 module testbench;
     reg clk = 0;
-    reg rst = 1;
+    reg rstn = 0;
     always clk = #5 !clk;
 
     wire mem_valid;
@@ -10,8 +10,8 @@ module testbench;
     wire [31:0] mem_wdata;
     wire [3:0] mem_wstrb;
     
-    microcore ucore (
-        .clk(clk), .rst(rst),
+    ucore ucore (
+        .clk(clk), .rstn(rstn),
         .mem_valid(mem_valid), .mem_ready(mem_ready),
         .mem_addr(mem_addr), .mem_rdata(mem_rdata),
         .mem_wdata(mem_wdata), .mem_wstrb(mem_wstrb)
@@ -27,8 +27,8 @@ module testbench;
     initial begin
         $dumpfile("testbench.vcd");
         $dumpvars;
-        #10
-        rst = 0;
+        #20
+        rstn = 1;
         #100000
         $finish;
     end

@@ -79,9 +79,9 @@ def LOAD_REG(reg, imm8, **kwargs):
 def SHIFT_AND_MASK(shift, mask, **kwargs):
     kwargs["code"].append((0b000101 << 10) | (shift << 5) | mask)
 
-@instruction(reg, imm5)
-def SHIFTL(reg, shift, **kwargs):
-    kwargs["code"].append((0b000110 << 10) | (reg << 8) | shift)
+@instruction(reg, reg)
+def SHIFTL(reg, shamt, **kwargs):
+    kwargs["code"].append((0b000110 << 10) | (reg << 8) | shamt)
 
 @instruction(reg, reg)
 def OR(dst, src, **kwargs):
@@ -120,12 +120,12 @@ def ADDPC(reg, **kwargs):
     kwargs["code"].append((0b001111 << 10) | (reg << 8))
 
 @instruction(reg, reg)
-def STORE_REG_REG(dst, src, **kwargs):
-    kwargs["code"].append((0b010000 << 10) | (dst << 8) | src)
+def STORE_REG_REG(reg, idx, **kwargs):
+    kwargs["code"].append((0b010000 << 10) | (reg << 8) | idx)
 
 @instruction(reg, reg)
-def LOAD_REG_REG(dst, src, **kwargs):
-    kwargs["code"].append((0b010001 << 10) | (src << 8) | dst)
+def LOAD_REG_REG(reg, idx, **kwargs):
+    kwargs["code"].append((0b010001 << 10) | (reg << 8) | idx)
 
 @instruction(label)
 def JUMP(addr, **kwargs):
@@ -138,6 +138,11 @@ def SIMM_J(dst, **kwargs):
 @instruction(reg)
 def SIMM_I(dst, **kwargs):
     kwargs["code"].append((0b010100 << 10) | (dst << 8))
+
+@instruction(reg)
+def GET_RESET_PC(dst, **kwargs):
+    kwargs["code"].append((0b010101 << 10) | (dst << 8))
+
 
 
 
